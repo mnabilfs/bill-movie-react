@@ -18,8 +18,11 @@
   /* border: 2px solid red; */
   width: 100%;
   display: flex;
+<<<<<<< HEAD
   flex-direction: column;
   flex-wrap: wrap;
+=======
+>>>>>>> 2a7aba4020751efb385a16bb4effb4b97df1c71a
   justify-content: center;
   align-items: center;
 }
