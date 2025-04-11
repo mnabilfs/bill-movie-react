@@ -1,34 +1,27 @@
-import "./App.css";
+import { useState, useEffect } from "react";
 import { getMovieList, searchMovie } from "./api";
-import { useEffect, useState } from "react";
+import "./App.css";
+import PopularMovieList from './components/PopularMovieList';
 
 function App() {
-  const [popularMovies, setPopularMovies] = useState([]);
+  const [movies, setMovies] = useState([]);
 
   useEffect(() => {
     getMovieList().then((result) => {
-      setPopularMovies(result);
+      setMovies(result);
     });
   }, []);
 
-  const PopularMovieList = () => {
-    return popularMovies.map((movie, i) => {
-      return (
-        <div className="Movie-wrapper" key={i}>
-          <div className="Movie-title">{movie.title}</div>
-          <div className="Movie-image" src={movie.poster_path} />
-          <div className="Movie-date">{movie.release_date}</div>
-          <div className="Movie-rate">{movie.vote_averange}</div>
-        </div>
-      );
-    });
+  const search = async (q) => {
+    if (q.length > 3) {
+      const query = await searchMovie(q);
+      setMovies(query.results); 
+    } else {
+      getMovieList().then((result) => {
+        setMovies(result);
+      });
+    }
   };
-
-  const search = (q) => {
-    console.log({ q });
-  };
-
-  console.log({ popularMovies: popularMovies });
 
   return (
     <div className="App">
@@ -41,7 +34,7 @@ function App() {
           onChange={({ target }) => search(target.value)}
         />
         <div className="Movie-container">
-          <PopularMovieList/>
+          <PopularMovieList movies={movies} />
         </div>
       </header>
     </div>
